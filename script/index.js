@@ -62,7 +62,7 @@ const displayWordDetails=(word)=>{
                 </div>
                 <div class="">
                     <h2 class="text-2xl font-bold">Example</h2>
-                    <p>Lorem ipsum dolor sit amet.</p>
+                    <p>${word.sentence?word.sentence:"Example Not Available"}</p>
                 </div>
                 <div class="">
                     <h2 class="text-2xl font-bold">Synonyms</h2>
@@ -121,3 +121,21 @@ const displayLesson = (lessons) => {
 }
 
 loadLessons();
+
+document.getElementById("btn-search").addEventListener("click",()=>{
+    removeActive();
+    const input=document.getElementById("input-search");
+    const searchValue=input.value.trim().toLowerCase();
+    // console.log(searchValue);
+
+    fetch("https://openapi.programming-hero.com/api/words/all")
+    .then(res=>res.json())
+    .then(data=>{
+        const allWords=data.data;
+        // console.log(allWords);
+        const filterWords=allWords.filter(word=>word.word.toLowerCase().includes(searchValue))
+        // console.log(filterWords);
+        displayLevelWord(filterWords);
+    })
+
+})
